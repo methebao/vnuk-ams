@@ -1,0 +1,17 @@
+{
+  "name": "vnuk-ams",
+  "version": "1.0.0",
+  "main": "index.js",
+  "engines": {
+    "node": "10.15.3",
+    "yarn": "1.15.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "TheBao",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
