@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { registerUser } from 'app/actions/authentication';
+import { connect } from 'react-redux';
+import classnames from 'classnames';
+import { withRouter } from 'react-router-dom';
 
 class Register extends Component {
     constructor(props) {
@@ -28,20 +32,35 @@ class Register extends Component {
             password: this.state.password,
             password_confirm: this.state.password_confirm,
         };
-        console.log(user);
+        this.props.registerUser(user, this.props.history);
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors) {
+            this.setState({
+                errors: nextProps.errors,
+            });
+        }
+    }
+    componentDidMount() {
+        if (this.props.auth.isAuthenticated) {
+            this.props.history.push('/');
+        }
     }
 
     render() {
+        const { errors } = this.state;
         return (
             <div className="container">
                 <form className="box u-margin-small" onSubmit={this.handleSubmit}>
                     <h2 className="title ">Register</h2>
                     <div className="field">
-                        <p className="control has-icons-left has-icons-right">
+                        <p className="control has-icons-left">
                             <input
                                 type="text"
                                 placeholder="Full name"
-                                className="input"
+                                className={classnames('input', {
+                                    'is-danger': errors.name,
+                                })}
                                 name="fullName"
                                 onChange={this.handleInputChange}
                                 value={this.state.fullName}
@@ -49,17 +68,18 @@ class Register extends Component {
                             <span className="icon is-small is-left">
                                 <i className="fas fa-user" />
                             </span>
-                            <span className="icon is-small is-right">
-                                <i className="fas fa-check" />
-                            </span>
+
+                            {errors.name && <p className="help is-danger">{errors.name}</p>}
                         </p>
                     </div>
                     <div className="field">
-                        <p className="control has-icons-left has-icons-right">
+                        <p className="control has-icons-left ">
                             <input
                                 type="email"
                                 placeholder="Email"
-                                className="input"
+                                className={classnames('input', {
+                                    'is-danger': errors.email,
+                                })}
                                 name="email"
                                 onChange={this.handleInputChange}
                                 value={this.state.email}
@@ -67,17 +87,17 @@ class Register extends Component {
                             <span className="icon is-small is-left">
                                 <i className="fas fa-envelope" />
                             </span>
-                            <span className="icon is-small is-right">
-                                <i className="fas fa-check" />
-                            </span>
+                            {errors.email && <p className="help is-danger">{errors.email}</p>}
                         </p>
                     </div>
                     <div className="field">
-                        <p className="control has-icons-left has-icons-right">
+                        <p className="control has-icons-left ">
                             <input
                                 type="password"
                                 placeholder="Password"
-                                className="input"
+                                className={classnames('input', {
+                                    'is-danger': errors.password,
+                                })}
                                 name="password"
                                 onChange={this.handleInputChange}
                                 value={this.state.password}
@@ -85,17 +105,17 @@ class Register extends Component {
                             <span className="icon is-small is-left">
                                 <i className="fas fa-key" />
                             </span>
-                            <span className="icon is-small is-right">
-                                <i className="fas fa-check" />
-                            </span>
+                            {errors.password && <p className="help is-danger">{errors.password}</p>}
                         </p>
                     </div>
                     <div className="field">
-                        <p className="control has-icons-left has-icons-right">
+                        <p className="control has-icons-left ">
                             <input
                                 type="password"
                                 placeholder="Confirm Password"
-                                className="input"
+                                className={classnames('input', {
+                                    'is-danger': errors.password_confirm,
+                                })}
                                 name="password_confirm"
                                 onChange={this.handleInputChange}
                                 value={this.state.password_confirm}
@@ -103,9 +123,7 @@ class Register extends Component {
                             <span className="icon is-small is-left">
                                 <i className="fas fa-lock" />
                             </span>
-                            <span className="icon is-small is-right">
-                                <i className="fas fa-check" />
-                            </span>
+                            {errors.password_confirm && <p className="help is-danger">{errors.password_confirm}</p>}
                         </p>
                     </div>
                     <div className="field">
@@ -121,4 +139,12 @@ class Register extends Component {
     }
 }
 
-export default Register;
+const mapStateToProps = state => ({
+    errors: state.errors,
+    auth: state.auth,
+});
+
+export default connect(
+    mapStateToProps,
+    { registerUser },
+)(withRouter(Register));

@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { loginUser } from 'app/actions/authentication';
+import { connect } from 'react-redux';
+import classnames from 'classnames';
+import { withRouter } from 'react-router-dom';
 
 class Login extends Component {
     constructor(props) {
@@ -24,20 +28,35 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password,
         };
-        console.log(user);
+        this.props.loginUser(user, this.props.history);
     }
-
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors) {
+            this.setState({
+                errors: nextProps.errors,
+            });
+        }
+    }
+    componentDidMount() {
+        if (this.props.auth.isAuthenticated) {
+            this.props.history.push('/');
+        }
+    }
     render() {
+        const { errors } = this.state;
+
         return (
             <div className="container">
                 <form className="box u-margin-small" onSubmit={this.handleSubmit}>
                     <h2 className="title ">Login</h2>
                     <div className="field">
-                        <p className="control has-icons-left has-icons-right">
+                        <p className="control has-icons-left">
                             <input
                                 type="email"
                                 placeholder="Email"
-                                className="input"
+                                className={classnames('input', {
+                                    'is-danger': errors.email,
+                                })}
                                 name="email"
                                 onChange={this.handleInputChange}
                                 value={this.state.email}
@@ -45,9 +64,7 @@ class Login extends Component {
                             <span className="icon is-small is-left">
                                 <i className="fas fa-envelope" />
                             </span>
-                            <span className="icon is-small is-right">
-                                <i className="fas fa-check" />
-                            </span>
+                            {errors.email && <p className="help is-danger">{errors.email}</p>}
                         </p>
                     </div>
                     <div className="field">
@@ -55,7 +72,9 @@ class Login extends Component {
                             <input
                                 type="password"
                                 placeholder="Password"
-                                className="input"
+                                className={classnames('input', {
+                                    'is-danger': errors.password,
+                                })}
                                 name="password"
                                 onChange={this.handleInputChange}
                                 value={this.state.password}
@@ -63,6 +82,7 @@ class Login extends Component {
                             <span className="icon is-small is-left">
                                 <i className="fas fa-lock" />
                             </span>
+                            {errors.password && <p className="help is-danger">{errors.password}</p>}
                         </p>
                     </div>
                     <div className="field">
@@ -78,4 +98,12 @@ class Login extends Component {
     }
 }
 
-export default Login;
+const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors,
+});
+
+export default connect(
+    mapStateToProps,
+    { loginUser },
+)(withRouter(Login));

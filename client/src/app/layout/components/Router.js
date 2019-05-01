@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Home from './../Home';
-import Login from '../Login';
-import Register from '../Register';
+import Home from '../../routes/home/Home';
+import Login from '../../routes/login/Login';
+import Register from '../../routes/register/Register';
 const Router = () => (
     <Switch>
         <Route exact path="/" component={Home} />

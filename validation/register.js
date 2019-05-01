@@ -9,11 +9,11 @@ module.exports = function validateRegisterInput(data) {
     data.password_confirm = !isEmpty(data.password_confirm) ? data.password_confirm : '';
 
     if (!Validator.isLength(data.fullName, { min: 2, max: 30 })) {
-        errors.name = 'fullName must be between 2 to 30 chars';
+        errors.name = 'Full Name must be between 2 to 30 chars';
     }
 
     if (Validator.isEmpty(data.fullName)) {
-        errors.name = 'fullName field is required';
+        errors.name = 'Full Name field is required';
     }
 
     if (!Validator.isEmail(data.email)) {

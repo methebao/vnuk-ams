@@ -21,8 +21,6 @@ const createNewUser = async ({ fullName, email, username, password }) => {
         password,
         isActive: true,
         userRole: studentUserRole._id,
-        createdAt: { type: mongoose.Types.Date, default: Date.now },
-        updatedAt: { type: mongoose.Types.Date, default: Date.now },
     });
 };
 

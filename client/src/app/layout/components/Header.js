@@ -1,18 +1,53 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import logo from '../../resources/images/logo.png';
+import logo from 'resources/images/logo.png';
+import { connect } from 'react-redux';
+import { logoutUser } from 'app/actions/authentication';
+import { withRouter } from 'react-router-dom';
+
 class Header extends React.Component {
     state = {
         isActive: false,
     };
 
-    toggleNav = () => {
+    toggleNav() {
         this.setState(prevState => ({
             isActive: !prevState.isActive,
         }));
-    };
-
+    }
+    onLogout(e) {
+        e.preventDefault();
+        this.props.logoutUser(this.props.history);
+    }
     render() {
+        const { isAuthenticated, user } = this.props.auth;
+        const authLinks = (
+            <div className="navbar-end">
+                <a className="navbar-item" onClick={e => this.onLogout(e)}>
+                    <span className="icon has-text-primary" style={{ marginRight: 5 }}>
+                        <i className="fas fa-sign-out-alt" />
+                    </span>
+                    Logout of {user.username}
+                </a>
+            </div>
+        );
+        const guestLinks = (
+            <div className="navbar-end">
+                <NavLink className="navbar-item" to={'/login'} activeClassName="is-active">
+                    <span className="icon has-text-primary" style={{ marginRight: 5 }}>
+                        <i className="fas fa-sign-in-alt" />
+                    </span>
+                    Login
+                </NavLink>
+
+                <NavLink className="navbar-item" to={'/register'} activeClassName="is-active">
+                    <span className="icon has-text-primary" style={{ marginRight: 5 }}>
+                        <i className="fas fa-user" />
+                    </span>
+                    Register
+                </NavLink>
+            </div>
+        );
         return (
             <nav
                 className="navbar"
@@ -32,7 +67,7 @@ class Header extends React.Component {
                         />
                         <span>AMS</span>
                     </a>
-                    <button className="button navbar-burger" onClick={this.toggleNav}>
+                    <button className="button navbar-burger" onClick={() => this.toggleNav()}>
                         <span />
                         <span />
                         <span />
@@ -53,25 +88,16 @@ class Header extends React.Component {
                             Data
                         </a>
                     </div>
-                    <div className="navbar-end">
-                        <NavLink className="navbar-item" to={'/login'} activeClassName="is-active">
-                            <span className="icon has-text-primary" style={{ marginRight: 5 }}>
-                                <i className="fas fa-sign-in-alt" />
-                            </span>
-                            Login
-                        </NavLink>
-
-                        <NavLink className="navbar-item" to={'/register'} activeClassName="is-active">
-                            <span className="icon has-text-primary" style={{ marginRight: 5 }}>
-                                <i className="fas fa-user" />
-                            </span>
-                            Register
-                        </NavLink>
-                    </div>
+                    {isAuthenticated ? authLinks : guestLinks}
                 </div>
             </nav>
         );
     }
 }
-
-export default Header;
+const mapStateToProps = state => ({
+    auth: state.auth,
+});
+export default connect(
+    mapStateToProps,
+    { logoutUser },
+)(withRouter(Header));
