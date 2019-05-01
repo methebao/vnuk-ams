@@ -64,7 +64,7 @@ class Login extends Component {
                             <span className="icon is-small is-left">
                                 <i className="fas fa-envelope" />
                             </span>
-                            {errors.email && <p className="help is-danger">{errors.email}</p>}
+                            {errors.email && <span className="help is-danger">{errors.email}</span>}
                         </p>
                     </div>
                     <div className="field">
@@ -82,7 +82,7 @@ class Login extends Component {
                             <span className="icon is-small is-left">
                                 <i className="fas fa-lock" />
                             </span>
-                            {errors.password && <p className="help is-danger">{errors.password}</p>}
+                            {errors.password && <span className="help is-danger">{errors.password}</span>}
                         </p>
                     </div>
                     <div className="field">

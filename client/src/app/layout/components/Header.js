@@ -27,7 +27,7 @@ class Header extends React.Component {
                     <span className="icon has-text-primary" style={{ marginRight: 5 }}>
                         <i className="fas fa-sign-out-alt" />
                     </span>
-                    Logout of {user.username}
+                    Logout of {user.email}
                 </a>
             </div>
         );
