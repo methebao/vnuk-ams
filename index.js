@@ -3,14 +3,12 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
-const ObjectId = mongoose.Types.ObjectId;
-
-require('./models/User');
+require('./models/index');
 require('./services/passport')(passport);
-const User = mongoose.model('user');
 
-const users = require('./routes/user');
+const setupRoutes = require('./routes/index');
 
+// DATABASE CONNECTION
 mongoose
     .connect(keys.mongoURL, { useNewUrlParser: true })
     .then(() => {
@@ -19,18 +17,15 @@ mongoose
     .catch(err => {
         console.log(err);
     });
+// SETUP EXPRESS APP
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/api/users', users);
+// SETUP ROUTES
+setupRoutes(app);
 
-app.get('/', (req, res) => {
-    res.send({
-        hi: 'there',
-    });
-});
-
+// SETUP PORT
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);

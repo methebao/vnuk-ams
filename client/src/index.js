@@ -9,11 +9,11 @@ import Layout from './app/layout/Layout';
 import setAuthToken from './app/setAuthToken';
 import { logoutUser, setCurrentUser } from './app/actions/authentication';
 
+// FETCH CURRENT USER & TOKEN TIMEOUT
 if (localStorage.jwtToken) {
     setAuthToken(localStorage.jwtToken);
     const decoded = jwt_decode(localStorage.jwtToken);
     store.dispatch(setCurrentUser(decoded));
-
     const currentTime = Date.now() / 1000;
     if (decoded.exp < currentTime) {
         store.dispatch(logoutUser());

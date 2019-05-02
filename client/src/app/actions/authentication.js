@@ -30,7 +30,6 @@ export const loginUser = (user, history) => dispatch => {
             history.push('/');
         })
         .catch(err => {
-            debugger;
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data,
@@ -38,7 +37,6 @@ export const loginUser = (user, history) => dispatch => {
         });
 };
 export const setCurrentUser = decoded => {
-    debugger;
     return {
         type: SET_CURRENT_USER,
         payload: decoded,
