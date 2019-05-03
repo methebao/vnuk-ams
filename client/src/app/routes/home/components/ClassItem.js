@@ -1,10 +1,14 @@
 import React from 'react';
 import getFormatedTime from 'app/helpers/formatTime';
+import { withRouter } from 'react-router-dom';
 
-const ClassItem = ({ name, description, course, startedTime, endedTime, updatedAt }) => {
+const ClassItem = ({ _id, name, description, course, startedTime, endedTime, updatedAt, history }) => {
+    const onClassItemClicked = () => {
+        history.push(`class/${_id}`);
+    };
     return (
         <div className="column is-one-quarter">
-            <div className="box">
+            <div className="box u-hover-effect " onClick={() => onClassItemClicked()}>
                 <article className="media">
                     <div className="media-content">
                         <div className="content">
@@ -31,11 +35,10 @@ const ClassItem = ({ name, description, course, startedTime, endedTime, updatedA
                             </p>
                         </div>
                     </div>
-                    <div className="media-right" />
                 </article>
             </div>
         </div>
     );
 };
 
-export default ClassItem;
+export default withRouter(ClassItem);

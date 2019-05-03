@@ -1,4 +1,4 @@
-const getFormatedTime = dateTime => {
+const getFormattedTime = dateTime => {
     return new Date(dateTime).toDateString();
 };
-export default getFormatedTime;
+export default getFormattedTime;

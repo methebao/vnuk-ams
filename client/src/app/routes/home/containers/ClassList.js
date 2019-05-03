@@ -8,11 +8,11 @@ class ClassList extends Component {
         this.props.fetchClasses();
     }
     renderList(classes) {
-        debugger;
-        return classes.reverse().map(({ _id, name, description, course, startedTime, endedTime, updatedAt }) => {
+        return classes.map(({ _id, name, description, course, startedTime, endedTime, updatedAt }) => {
             return (
                 <ClassItem
                     key={_id}
+                    _id={_id}
                     name={name}
                     description={description}
                     course={course}

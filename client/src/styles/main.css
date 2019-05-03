@@ -26814,3 +26814,9 @@ body {
 
 .u-margin-top-big {
   margin-top: 8rem !important; }
+
+.u-hover-effect {
+  cursor: pointer;
+  transition: all .2s; }
+  .u-hover-effect:hover {
+    transform: scale(1.05); }

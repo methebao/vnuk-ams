@@ -21,15 +21,22 @@ router.get('/', async (req, res) => {
     }
 });
 router.get('/:classId/', async (req, res) => {
-    let classId = new mongoose.Types.ObjectId(req.params.classId);
     try {
+        let classId = new mongoose.Types.ObjectId(req.params.classId);
         await AccessCode.find({
             class: classId,
         })
             .populate('user')
             .exec((err, accessCodes) => {
                 if (err) return res.status(422).json(err);
-                res.json(accessCodes);
+                let users = accessCodes
+                    .map(accessCode => {
+                        return accessCode.user;
+                    })
+                    .filter(user => {
+                        return user !== undefined;
+                    });
+                res.json(users);
             });
     } catch (err) {
         res.status(422).json(err);
