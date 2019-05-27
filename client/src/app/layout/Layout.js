@@ -1,35 +1,41 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
-import Site from './components/Site';
 import Header from './components/Header';
-import Content from './components/Content';
-import Footer from './components/Footer';
 import Router from './components/Router';
+import SideBar from './components/Sidebar';
+import { Layout as LayoutBase } from 'antd';
+const { Content, Footer } = LayoutBase;
 
 const Layout = ({ children }) => (
-    <Site>
-        <Helmet
-            title="VNUK - Atendance Management System"
-            meta={[
-                { name: 'description', content: ' Atendance Management System made by VNUK Students' },
-                { name: 'keywords', content: 'Atendance, Management, project, vnuk' },
-            ]}
-            script={[{ src: 'https://use.fontawesome.com/releases/v5.0.4/js/all.js' }]}
-            link={[
-                {
-                    rel: 'stylesheet',
-                    href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
-                },
-            ]}
-        />
-        <Header />
-        <Content>
-            <Router />
-        </Content>
-        <Footer />
-    </Site>
+    <LayoutBase style={{ minHeight: '100vh' }}>
+        <SideBar />
+        <LayoutBase className="layout">
+            <Helmet
+                title="VNUK - Atendance Management System"
+                meta={[
+                    { name: 'description', content: ' Attendance Management System made by VNUK Students' },
+                    { name: 'keywords', content: 'Attendance, Management, project, vnuk' },
+                ]}
+                script={[{ src: 'https://use.fontawesome.com/releases/v5.0.4/js/all.js' }]}
+                link={[
+                    {
+                        rel: 'stylesheet',
+                        href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+                    },
+                ]}
+            />
+
+            <Content>
+                <Header />
+                <div className="content-box">
+                    <Router />
+                </div>
+            </Content>
+            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+        </LayoutBase>
+    </LayoutBase>
 );
 
 Layout.propTypes = {

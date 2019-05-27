@@ -1,12 +1,26 @@
 import { combineReducers } from 'redux';
-import errorReducer from './errorReducer';
-import authReducer from './authReducer';
-import classesReducer from './classesReducer';
-import studentsReducer from './studentsReducer';
+import authReducer from './data/authReducer';
+import classesReducer from './data/classesReducer';
+import studentsReducer from './data/studentsReducer';
+import pageReducer from './ui/pageReducer';
+import headerReducer from './ui/headerReducer';
 
 export default combineReducers({
-    errors: errorReducer,
-    auth: authReducer,
-    classes: classesReducer,
-    students: studentsReducer,
+    common: combineReducers({
+        auth: authReducer,
+    }),
+    commonUI: combineReducers({
+        page: pageReducer,
+        header: headerReducer,
+    }),
+    homePage: combineReducers({
+        data: combineReducers({
+            classes: classesReducer,
+        }),
+    }),
+    classPage: combineReducers({
+        data: combineReducers({
+            students: studentsReducer,
+        }),
+    }),
 });

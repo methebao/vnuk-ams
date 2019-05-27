@@ -35,7 +35,7 @@ router.post('/register', async function(req, res) {
     });
     if (user) {
         return res.status(400).json({
-            email: 'Email already exists',
+            message: 'Email already exists',
         });
     } else {
         const newUser = await createNewUser(req.body);
@@ -63,7 +63,7 @@ router.post('/login', (req, res) => {
 
     User.findOne({ email }).then(user => {
         if (!user) {
-            errors.email = 'User not found';
+            errors.message = 'User not found';
             return res.status(404).json(errors);
         }
         bcrypt.compare(password, user.password).then(isMatch => {
@@ -90,7 +90,7 @@ router.post('/login', (req, res) => {
                     },
                 );
             } else {
-                errors.password = 'Incorrect Password';
+                errors.message = 'Incorrect Password';
                 return res.status(400).json(errors);
             }
         });
@@ -105,4 +105,12 @@ router.get('/me', passport.authenticate('jwt', { session: false }), (req, res) =
     });
 });
 
+router.get('/auth', passport.authenticate('google', { session: false }));
+router.get('/auth/callback', passport.authenticate('google', { session: false, failureRedirect: '/login' }), function(
+    req,
+    res,
+) {
+    req.session.access_token = req.user.accessToken;
+    res.redirect('/');
+});
 module.exports = router;

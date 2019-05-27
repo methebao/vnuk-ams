@@ -78,7 +78,7 @@ module.exports = function(webpackEnv) {
             },
             {
                 // Options for PostCSS as we reference these options twice
-                // Adds vendor prefixing based on your specified browser support in
+                // Adds vendors prefixing based on your specified browser support in
                 // package.json
                 loader: require.resolve('postcss-loader'),
                 options: {
@@ -231,7 +231,7 @@ module.exports = function(webpackEnv) {
                     },
                 }),
             ],
-            // Automatically split vendor and commons
+            // Automatically split vendors and commons
             // https://twitter.com/wSokra/status/969633336732905474
             // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
             splitChunks: {

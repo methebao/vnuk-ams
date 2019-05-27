@@ -1,15 +1,18 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Home from 'app/routes/home/Home';
-import Login from 'app/routes/login/Login';
-import Register from 'app/routes/register/Register';
-import Class from 'app/routes/class/Class';
+import Home from 'app/routes/home';
+import Login from 'app/routes/login';
+import Register from 'app/routes/register';
+import Index from 'app/routes/class';
+import { ROUTES } from 'app/constants';
+import Dashboard from 'app/routes/dashboard';
 const Router = () => (
     <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/class/:classId" component={Class} />
+        <Route exact path={ROUTES.HOMEPAGE} component={Home} />
+        <Route exact path={ROUTES.DASHBOARD} component={Dashboard} />
+        <Route exact path={ROUTES.LOGIN} component={Login} />
+        <Route exact path={ROUTES.REGISTER} component={Register} />
+        <Route exact path={ROUTES.CLASS_BY_ID} component={Index} />
     </Switch>
 );
 export default Router;

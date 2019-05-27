@@ -5,6 +5,10 @@ import { Provider } from 'react-redux';
 import store from './store/index';
 import jwt_decode from 'jwt-decode';
 import './styles/main.scss';
+import '@fortawesome/fontawesome-free/js/all';
+import 'react-toastify/dist/ReactToastify.css';
+import 'antd/dist/antd.css';
+
 import Layout from './app/layout/Layout';
 import setAuthToken from './app/setAuthToken';
 import { logoutUser, setCurrentUser } from './app/actions/authentication';

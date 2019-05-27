@@ -1,20 +1,21 @@
 import axios from 'axios';
-import { GET_ERRORS, SET_CURRENT_USER } from 'app/constants/actionTypes';
+import { ROUTES } from 'app/constants';
+import { SET_CURRENT_USER_SUCCESS } from 'app/constants/actionTypes';
 import setAuthToken from 'app/setAuthToken';
 import jwt_decode from 'jwt-decode';
+import { message } from 'antd';
 
 export const registerUser = (user, history) => dispatch => {
     axios
         .post('/api/users/register', user)
         .then(res => {
-            history.push('/login');
+            history.push(ROUTES.LOGIN);
+            const registeredUser = res.data;
+            message.success(`Successfully registered ${registeredUser.email} account`);
         })
         .catch(err => {
-            debugger;
-            dispatch({
-                type: GET_ERRORS,
-                payload: err.response.data,
-            });
+            const { errors } = err.response.data;
+            message.error(errors.toString());
         });
 };
 
@@ -28,17 +29,15 @@ export const loginUser = (user, history) => dispatch => {
             const decoded = jwt_decode(token);
             dispatch(setCurrentUser(decoded));
             history.push('/');
+            message.success(`Successfully logged in with ${user.email} account`);
         })
         .catch(err => {
-            dispatch({
-                type: GET_ERRORS,
-                payload: err.response.data,
-            });
+            message.error(err.response.data.message);
         });
 };
 export const setCurrentUser = decoded => {
     return {
-        type: SET_CURRENT_USER,
+        type: SET_CURRENT_USER_SUCCESS,
         payload: decoded,
     };
 };
@@ -47,4 +46,5 @@ export const logoutUser = history => dispatch => {
     setAuthToken(false);
     dispatch(setCurrentUser({}));
     history.push('/login');
+    message.success(`Successfully logged out !`);
 };

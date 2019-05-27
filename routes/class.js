@@ -7,14 +7,28 @@ const Class = mongoose.model('class');
 const AccessCode = mongoose.model('access_code');
 
 router.get('/', async (req, res) => {
+    let pageNo = parseInt(req.query.pageNo);
+    let size = parseInt(req.query.size);
+    let query = {};
+    let errors = {};
+    if (pageNo <= 0) {
+        errors.message = 'invalid page number, should start with 1';
+        return res.status(422).json(errors);
+    }
+    query.skip = size * (pageNo - 1);
+    query.limit = size;
+
     try {
-        await Class.find({})
+        let totalCount = await Class.count({});
+
+        await Class.find({}, {}, query)
             .where('status')
             .equals('active')
             .populate('course')
             .exec((err, classes) => {
+                let totalPages = Math.ceil(totalCount / size);
                 if (err) return res.status(422).json(err);
-                res.json(classes);
+                res.json({ classes, pages: totalPages });
             });
     } catch (err) {
         res.status(422).json(err);

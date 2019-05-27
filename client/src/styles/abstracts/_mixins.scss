@@ -4,24 +4,26 @@
 
 /*
 	FROM--------------------TO-------------------DEVICES
-	0px                   	425px				  *Current Styling
-	426px				    768px					Tablet
-	768px				    1024px					Desktop
-	1025px				    >1024px					Big Desktops
+	0px                   	566px				    xs *Current Styling
+	576				        767px					sm
+	768px				    991px					md
+	992px				    1119px					lg
+	1200px				    *					    xl
 */
 // TODOS: Update comment
 
 @mixin respond($breakpoint) {
-  @if $breakpoint == phone {
-    @media (max-width: 26.5625em) {
+  @if $breakpoint == xs {
+    @media (max-width: 35.375em) {
       @content;
     }
   } @else {
     $minWidth: map-get(
                     (
-                            tablet: 26.625em,
-                            desktop: 48em,
-                            big-desktop: 64.0625em,
+                            sm: 35.4375em,
+                            md: 48em,
+                            lg: 62em,
+                            xl: 75em
                     ),
                     $breakpoint
     );

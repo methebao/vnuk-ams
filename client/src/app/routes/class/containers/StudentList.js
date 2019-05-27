@@ -1,36 +1,30 @@
 import React, { Component } from 'react';
+import { compose } from 'recompose';
+
 import StudentItem from '../components/StudentItem';
-import { connect } from 'react-redux';
-import { fetchStudents } from 'app/actions/students';
+import { Empty, Row } from 'antd';
+import withEither from '../../../hoc/withEither';
+import Spinner from '../../../components/Spinner';
+import withMaybe from '../../../hoc/withMaybe';
 
-class StudentList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+const isLoadingConditionFn = props => props.isLoading;
+const nullConditionFn = props => !props.students;
+const isEmptyConditionFn = props => !props.students.length;
 
-    componentDidMount() {
-        this.props.fetchStudents(this.props.classId);
-    }
-    renderList(students) {
-        return students.map(({ _id, fullName, email }) => {
-            return <StudentItem key={_id} fullName={fullName} email={email} />;
+const withConditionalRenderings = compose(
+    withEither(isLoadingConditionFn, Spinner),
+    withMaybe(nullConditionFn),
+    withEither(isEmptyConditionFn, Empty),
+);
+
+const StudentList = ({ students }) => {
+    const renderList = () => {
+        return students.reverse().map(item => {
+            return <StudentItem key={item._id} item={item} />;
         });
-    }
-    render() {
-        return (
-            <section className="section">
-                <div className="container">
-                    <div className="columns is-multiline is-desktop ">{this.renderList(this.props.students)}</div>
-                </div>
-            </section>
-        );
-    }
-}
-const mapStateToProps = state => ({
-    students: state.students,
-});
-export default connect(
-    mapStateToProps,
-    { fetchStudents },
-)(StudentList);
+    };
+
+    return <Row gutter={16}>{renderList()}</Row>;
+};
+
+export default withConditionalRenderings(StudentList);

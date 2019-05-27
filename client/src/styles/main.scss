@@ -1,4 +1,4 @@
-@import '../../node_modules/bulma/bulma';
-@import '../../node_modules/bulma-extensions/src/sass/index';
-@import '../../node_modules/bulma-helpers/bulma-helpers';
+@import 'vendors/all';
 @import 'abstracts/all';
+@import 'components/all';
+@import 'pages/all';
