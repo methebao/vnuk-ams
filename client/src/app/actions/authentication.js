@@ -14,8 +14,7 @@ export const registerUser = (user, history) => dispatch => {
             message.success(`Successfully registered ${registeredUser.email} account`);
         })
         .catch(err => {
-            const { errors } = err.response.data;
-            message.error(errors.toString());
+            message.error(err.response.data.message);
         });
 };
 

@@ -5,6 +5,6 @@ const calendar = require('./calendar');
 const setupRoutes = app => {
     app.use('/api/users', users);
     app.use('/api/classes', classes);
-    app.use('/api/calendar', classes);
+    app.use('/api/calendar', calendar);
 };
 module.exports = setupRoutes;

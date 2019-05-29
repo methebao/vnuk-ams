@@ -104,13 +104,22 @@ router.get('/me', passport.authenticate('jwt', { session: false }), (req, res) =
         email: req.user.email,
     });
 });
-
+router.get('/current', (req, res) => {
+    res.send(req.user);
+});
 router.get('/auth', passport.authenticate('google', { session: false }));
 router.get('/auth/callback', passport.authenticate('google', { session: false, failureRedirect: '/login' }), function(
     req,
     res,
 ) {
-    req.session.access_token = req.user.accessToken;
-    res.redirect('/');
+    let { accessToken, googleId } = req.user;
+    req.session.access_token = accessToken;
+
+    return res.json({
+        id: req.user.id,
+        googleId: req.user.googleId,
+        name: req.user.fullName,
+        email: req.user.email,
+    });
 });
 module.exports = router;
