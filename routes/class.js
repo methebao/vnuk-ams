@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const express = require('express');
 const router = express.Router();
-
+const requireLogin = require('../middlewares/requireLogin');
 const Class = mongoose.model('class');
 const AccessCode = mongoose.model('access_code');
 
-router.get('/', async (req, res) => {
+router.get('/', requireLogin, async (req, res) => {
     let pageNo = parseInt(req.query.pageNo);
     let size = parseInt(req.query.size);
     let query = {};
@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
         res.status(422).json(err);
     }
 });
-router.get('/:classId/', async (req, res) => {
+router.get('/:classId/', requireLogin, async (req, res) => {
     try {
         let classId = new mongoose.Types.ObjectId(req.params.classId);
         await AccessCode.find({

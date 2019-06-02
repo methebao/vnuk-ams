@@ -1,7 +1,10 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
 const router = express.Router();
 const gcal = require('google-calendar');
-
+const Event = mongoose.model('event');
+const toEventObject = require('../models/Event');
 router.all('/', function(req, res) {
     if (!req.session.access_token) return res.redirect('/api/users/auth');
 
@@ -13,7 +16,14 @@ router.all('/', function(req, res) {
         return res.send(data);
     });
 });
-
+router.all('/events', async (req, res) => {
+    try {
+        let data = await Event.find();
+        return res.json(data);
+    } catch (err) {
+        return res.status(500, err);
+    }
+});
 router.all('/:calendarId', async (req, res) => {
     if (!req.session.access_token) return res.redirect('/api/users/auth');
 
@@ -21,7 +31,7 @@ router.all('/:calendarId', async (req, res) => {
     let accessToken = req.session.access_token;
     let calendarId = req.params.calendarId;
     let events = [];
-    gcal(accessToken).events.list(calendarId, { maxResults: 2500, singleEvents: true }, function(err, data) {
+    gcal(accessToken).events.list(calendarId, { maxResults: 2500, singleEvents: true }, async (err, data) => {
         if (err) return res.send(500, err);
 
         events = events.concat(data.items);
@@ -35,7 +45,19 @@ router.all('/:calendarId', async (req, res) => {
                 },
             );
         } else {
-            return res.json(events);
+            try {
+                let convertedEvents = [];
+
+                events.map(event => {
+                    convertedEvents.push(toEventObject(event));
+                });
+                let data = await Event.insertMany(convertedEvents);
+
+                return res.json(data);
+            } catch (err) {
+                return res.status(500, err);
+            }
+            // return res.json(events);
         }
     });
 });

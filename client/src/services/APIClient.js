@@ -3,6 +3,7 @@ import axios from 'axios';
 const endpoints = {
     CLASSES: 'classes',
     STUDENTS: 'students',
+    EVENTS: 'calendar/events',
 };
 
 const APIClient = {
@@ -20,6 +21,10 @@ const APIClient = {
 
     async getStudentsByClassId(classId, config = {}) {
         let finalURL = `${this.BASE_URL}/${endpoints.CLASSES}/${classId}`;
+        return axios.get(finalURL, config);
+    },
+    async getEvents(config = {}) {
+        let finalURL = `${this.BASE_URL}/${endpoints.EVENTS}`;
         return axios.get(finalURL, config);
     },
 };

@@ -4,7 +4,7 @@ import classesReducer from './data/classesReducer';
 import studentsReducer from './data/studentsReducer';
 import pageReducer from './ui/pageReducer';
 import headerReducer from './ui/headerReducer';
-
+import eventsReducer from './data/eventsReducer';
 export default combineReducers({
     common: combineReducers({
         auth: authReducer,
@@ -16,6 +16,7 @@ export default combineReducers({
     homePage: combineReducers({
         data: combineReducers({
             classes: classesReducer,
+            events: eventsReducer,
         }),
     }),
     classPage: combineReducers({

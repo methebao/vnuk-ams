@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import ClassList from './containers/ClassList';
+import Calendar from './containers/Calendar';
 import { connect } from 'react-redux';
 import { fetchClassesPerPage } from 'app/actions/classes';
 import { setHeaderTitle } from 'app/actions/uiAction';
@@ -18,8 +19,8 @@ const Dashboard = ({ classes, currentPage, pages, fetchClassesPerPage, setHeader
 
     return (
         <div className="dashboard">
-            <ClassList classes={classes} isLoading={isFetching} />
-            <Paper totalPages={pages || 0} />
+            {/*<ClassList classes={classes} isLoading={isFetching} />*/}
+            {/*<Paper totalPages={pages || 0} />*/}
         </div>
     );
 };
