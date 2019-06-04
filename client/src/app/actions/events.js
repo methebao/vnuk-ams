@@ -6,9 +6,28 @@ export const fetchEvents = () => async dispatch => {
         type: actionTypes.GET_EVENTS_BEGIN,
     });
     try {
-        debugger;
         const { data } = await APIClient.getEvents();
-        debugger;
+        dispatch({
+            type: actionTypes.GET_EVENTS_SUCCESS,
+            payload: {
+                data,
+            },
+        });
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_EVENTS_FAILURE,
+            payload: {
+                error,
+            },
+        });
+    }
+};
+export const fetchEventById = eventId => async dispatch => {
+    dispatch({
+        type: actionTypes.GET_EVENTS_BEGIN,
+    });
+    try {
+        const { data } = await APIClient.getEventById(eventId);
         dispatch({
             type: actionTypes.GET_EVENTS_SUCCESS,
             payload: {

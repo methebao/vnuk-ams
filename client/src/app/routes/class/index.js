@@ -18,7 +18,6 @@ const Class = ({ students, fetchStudents, match, isFetching }) => {
 
 const mapStateToProps = state => {
     const classPageStore = state.classPage;
-    debugger;
     return {
         students: classPageStore.data.students.data,
         isFetching: classPageStore.data.students.isFetching,

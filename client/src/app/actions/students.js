@@ -6,7 +6,6 @@ export const fetchStudents = classId => async dispatch => {
         type: actionTypes.GET_STUDENTS_BEGIN,
     });
     try {
-        debugger;
         const res = await APIClient.getStudentsByClassId(classId);
 
         dispatch({

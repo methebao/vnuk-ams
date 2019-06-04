@@ -19,6 +19,11 @@ export default combineReducers({
             events: eventsReducer,
         }),
     }),
+    eventPage: combineReducers({
+        data: combineReducers({
+            events: eventsReducer,
+        }),
+    }),
     classPage: combineReducers({
         data: combineReducers({
             students: studentsReducer,

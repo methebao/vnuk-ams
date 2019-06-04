@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import { compose } from 'recompose';
 
-import toDate from '../helpers/toDate';
-import { connect } from 'react-redux';
-import { fetchEvents } from 'app/actions/events';
+import toDate from '../../dashboard/helpers/toDate';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment/moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -11,6 +9,8 @@ import withEither from '../../../hoc/withEither';
 import Spinner from '../../../components/Spinner';
 import withMaybe from '../../../hoc/withMaybe';
 import { Empty } from 'antd';
+import { ROUTES } from 'app/constants';
+import { withRouter } from 'react-router-dom';
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
@@ -25,8 +25,7 @@ const withConditionalRenderings = compose(
     withEither(isEmptyConditionFn, Empty),
 );
 
-const MyCalendar = ({ events }) => {
-    debugger;
+const Calendar = ({ events, history }) => {
     const displayEvents = events.reduce((all, event) => {
         const displayEvent = {
             ...event,
@@ -35,12 +34,20 @@ const MyCalendar = ({ events }) => {
         };
         return [...all, displayEvent];
     }, []);
-    debugger;
     return (
-        <div className="container">
-            <BigCalendar localizer={localizer} events={displayEvents} startAccessor="start" endAccessor="end" />,
+        <div className="calendar">
+            <BigCalendar
+                localizer={localizer}
+                events={displayEvents}
+                startAccessor="start"
+                endAccessor="end"
+                onSelectEvent={event =>
+                    history.push(`${ROUTES.EVENT}/${event._id}`)
+                }
+            />
+            ,
         </div>
     );
 };
 
-export default withConditionalRenderings(MyCalendar);
+export default withConditionalRenderings(withRouter(Calendar));

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fetchClassesPerPage } from 'app/actions/classes';
 import { setHeaderTitle } from 'app/actions/uiAction';
 import { PAGE_TITLE } from 'app/constants';
-import MyCalendar from '../dashboard/containers/Calendar';
+import Calendar from './components/Calendar';
 import { fetchEvents } from '../../actions/events';
 
 const Home = ({ events, fetchEvents, isFetching }) => {
@@ -15,11 +15,7 @@ const Home = ({ events, fetchEvents, isFetching }) => {
         setHeaderTitle(PAGE_TITLE.HOMEPAGE);
     }, []);
 
-    return (
-        <div className="calendar">
-            <MyCalendar events={events} isLoading={isFetching} />
-        </div>
-    );
+    return <Calendar events={events} isLoading={isFetching} />;
 };
 
 const mapStateToProps = state => {
@@ -28,7 +24,7 @@ const mapStateToProps = state => {
 
     return {
         events: homePageStore.data.events.data,
-        isFetching: homePageStore.data.classes.isFetching,
+        isFetching: homePageStore.data.events.isFetching,
     };
 };
 

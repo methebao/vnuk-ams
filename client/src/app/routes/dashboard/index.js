@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import ClassList from './containers/ClassList';
-import Calendar from './containers/Calendar';
+import Calendar from '../home/components/Calendar';
 import { connect } from 'react-redux';
 import { fetchClassesPerPage } from 'app/actions/classes';
 import { setHeaderTitle } from 'app/actions/uiAction';
@@ -9,7 +9,14 @@ import { PAGE_TITLE } from 'app/constants';
 import Paper from 'app/components/Paper';
 const CLASS_PER_PAGE = 6;
 
-const Dashboard = ({ classes, currentPage, pages, fetchClassesPerPage, setHeaderTitle, isFetching }) => {
+const Dashboard = ({
+    classes,
+    currentPage,
+    pages,
+    fetchClassesPerPage,
+    setHeaderTitle,
+    isFetching,
+}) => {
     useEffect(() => {
         fetchClassesPerPage(currentPage, CLASS_PER_PAGE);
     }, [currentPage]);

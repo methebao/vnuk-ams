@@ -100,3 +100,6 @@ html body {
 .form-box {
   margin: auto;
   min-width: 20rem; }
+
+.calendar {
+  width: 100%; }

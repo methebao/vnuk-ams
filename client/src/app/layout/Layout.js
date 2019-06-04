@@ -15,14 +15,27 @@ const Layout = ({ children }) => (
             <Helmet
                 title="VNUK - Atendance Management System"
                 meta={[
-                    { name: 'description', content: ' Attendance Management System made by VNUK Students' },
-                    { name: 'keywords', content: 'Attendance, Management, project, vnuk' },
+                    {
+                        name: 'description',
+                        content:
+                            ' Attendance Management System made by VNUK Students',
+                    },
+                    {
+                        name: 'keywords',
+                        content: 'Attendance, Management, project, vnuk',
+                    },
                 ]}
-                script={[{ src: 'https://use.fontawesome.com/releases/v5.0.4/js/all.js' }]}
+                script={[
+                    {
+                        src:
+                            'https://use.fontawesome.com/releases/v5.0.4/js/all.js',
+                    },
+                ]}
                 link={[
                     {
                         rel: 'stylesheet',
-                        href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+                        href:
+                            'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
                     },
                 ]}
             />
@@ -33,7 +46,10 @@ const Layout = ({ children }) => (
                     <Router />
                 </div>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+            <Footer style={{ textAlign: 'center' }}>
+                VNUK - Attendace Management System ©2018
+                <p>Created by TheBaoDev.me</p>
+            </Footer>
         </LayoutBase>
     </LayoutBase>
 );

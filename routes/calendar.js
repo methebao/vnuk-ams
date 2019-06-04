@@ -16,14 +16,6 @@ router.all('/', function(req, res) {
         return res.send(data);
     });
 });
-router.all('/events', async (req, res) => {
-    try {
-        let data = await Event.find();
-        return res.json(data);
-    } catch (err) {
-        return res.status(500, err);
-    }
-});
 router.all('/:calendarId', async (req, res) => {
     if (!req.session.access_token) return res.redirect('/api/users/auth');
 
@@ -31,35 +23,43 @@ router.all('/:calendarId', async (req, res) => {
     let accessToken = req.session.access_token;
     let calendarId = req.params.calendarId;
     let events = [];
-    gcal(accessToken).events.list(calendarId, { maxResults: 2500, singleEvents: true }, async (err, data) => {
-        if (err) return res.send(500, err);
+    gcal(accessToken).events.list(
+        calendarId,
+        { maxResults: 2500, singleEvents: true },
+        async (err, data) => {
+            if (err) return res.send(500, err);
 
-        events = events.concat(data.items);
-        if (data.nextPageToken) {
-            gcal(accessToken).events.list(
-                calendarId,
-                { maxResults: 2500, singleEvents: true, pageToken: data.nextPageToken },
-                function(err, data) {
-                    events = events.concat(data.items);
-                    return res.json(events);
-                },
-            );
-        } else {
-            try {
-                let convertedEvents = [];
+            events = events.concat(data.items);
+            if (data.nextPageToken) {
+                gcal(accessToken).events.list(
+                    calendarId,
+                    {
+                        maxResults: 2500,
+                        singleEvents: true,
+                        pageToken: data.nextPageToken,
+                    },
+                    function(err, data) {
+                        events = events.concat(data.items);
+                        return res.json(events);
+                    },
+                );
+            } else {
+                try {
+                    let convertedEvents = [];
 
-                events.map(event => {
-                    convertedEvents.push(toEventObject(event));
-                });
-                let data = await Event.insertMany(convertedEvents);
+                    events.map(event => {
+                        convertedEvents.push(toEventObject(event));
+                    });
+                    let data = await Event.insertMany(convertedEvents);
 
-                return res.json(data);
-            } catch (err) {
-                return res.status(500, err);
+                    return res.json(data);
+                } catch (err) {
+                    return res.status(500, err);
+                }
+                // return res.json(events);
             }
-            // return res.json(events);
-        }
-    });
+        },
+    );
 });
 
 router.all('/:calendarId/:eventId', function(req, res) {
