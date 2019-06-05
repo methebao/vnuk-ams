@@ -1,4 +1,11 @@
 @import url(~@fortawesome/fontawesome-free/css/fontawesome.css);
+.ant-checkbox-inner {
+  width: 24px;
+  height: 24px; }
+
+.ant-checkbox-checked .ant-checkbox-inner::after {
+  transform: rotate(45deg) scale(1.8) translate(-10%, -50%); }
+
 /*------------------------------------*/
 /* MEDIA QUERIES MIXINS  */
 /*------------------------------------*/
@@ -103,3 +110,15 @@ html body {
 
 .calendar {
   width: 100%; }
+
+.event-page {
+  width: 100%; }
+  .event-page__info {
+    display: flex; }
+  .event-page__desc {
+    flex: 1; }
+  .event-page__stats {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center; }

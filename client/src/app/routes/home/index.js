@@ -20,7 +20,6 @@ const Home = ({ events, fetchEvents, isFetching }) => {
 
 const mapStateToProps = state => {
     const homePageStore = state.homePage;
-    const commonUIStore = state.commonUI;
 
     return {
         events: homePageStore.data.events.data,

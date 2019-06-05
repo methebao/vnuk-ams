@@ -50,6 +50,8 @@ router.all('/:calendarId', async (req, res) => {
                     events.map(event => {
                         convertedEvents.push(toEventObject(event));
                     });
+
+                    // TODO: Insert All event ids to a TimeTable document with classCode
                     let data = await Event.insertMany(convertedEvents);
 
                     return res.json(data);
