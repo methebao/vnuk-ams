@@ -22,6 +22,7 @@ export default combineReducers({
     eventPage: combineReducers({
         data: combineReducers({
             events: eventsReducer,
+            // TODO: Create more studentsReducer for solve problem of nested state realtional.
         }),
     }),
     classPage: combineReducers({

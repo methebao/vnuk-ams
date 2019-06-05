@@ -33,6 +33,38 @@ export default (state = initialState, action) => {
                 isFetching: false,
             };
         }
+
+        case actionTypes.UPDATE_EVENT_BEGIN: {
+            return {
+                ...state,
+                isFetching: true,
+            };
+        }
+        case actionTypes.UPDATE_EVENT_SUCCESS: {
+            const { data: newEvent } = action.payload;
+
+            return {
+                ...state,
+                data: state.data.map(item => {
+                    if (item._id === newEvent.id) {
+                        item = newEvent;
+                    }
+                    return item;
+                }),
+                fetchError: null,
+                isFetching: false,
+            };
+        }
+        case actionTypes.UPDATE_EVENT_FAILURE: {
+            const { error: fetchError } = action.payload;
+
+            return {
+                ...state,
+                fetchError,
+                isFetching: false,
+            };
+        }
+
         default: {
             return state;
         }

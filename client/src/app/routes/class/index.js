@@ -3,6 +3,8 @@ import StudentList from './containers/StudentList';
 import { connect } from 'react-redux';
 import { fetchStudents } from '../../actions/students';
 
+// TODO: Change Class to display Calendar with events of specific classCode.
+// TODO: Create another route & components to handle class management ( list student with attendance stastitics  )
 const Class = ({ students, fetchStudents, match, isFetching }) => {
     useEffect(() => {
         const { classId } = match.params;

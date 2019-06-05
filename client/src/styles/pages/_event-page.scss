@@ -1,0 +1,15 @@
+.event-page {
+    width: 100%;
+    &__info {
+        display: flex;
+    }
+    &__desc {
+        flex: 1;
+    }
+    &__stats {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
