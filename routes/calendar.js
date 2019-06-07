@@ -48,49 +48,64 @@ router.all('/:calendarId', async (req, res) => {
                 );
             } else {
                 try {
-                    let convertedEvents = [];
-
-                    events.forEach(event => {
-                        const summary = { event };
-                        let classCode = summary.substring(
-                            summary.indexOf('#') + 1,
-                            summary.lastIndexOf('#'),
-                        );
-                        Class.findOne({ classCode }).then(classItem => {
-                            if (classItem) {
-                                await AccessCode.find({
-                                    class: classItem._id,
-                                })
-                                    .populate('user')
-                                    .exec((err, accessCodes) => {
-                                        if (err) return res.status(422).json(err);
-                                        let users = accessCodes
-                                            .map(accessCode => {
-                                                return accessCode.user;
-                                            })
-                                            .filter(user => {
-                                                return user !== undefined;
-                                            });
-                                        event.users = users;
-                                        convertedEvents.push(toEventObject(event));
-                                    });
-
-                            };
-                        });
-                    });
-
-                    // TODO: Insert All event ids to a TimeTable document with classCode
-                    let data = await Event.insertMany(convertedEvents);
-
-                    return res.json(data);
+                    let validEvents = await getAllValidEvents(events);
+                    let insertedEvents = await Event.insertMany(validEvents);
+                    return res.json(insertedEvents);
                 } catch (err) {
-                    return res.status(500, err);
+                    return res.status(422).json(err);
                 }
+
+                // TODO: Insert All event ids to a TimeTable document with classCode
             }
         },
     );
 });
+const getAllValidEvents = async events => {
+    let newEvents = [];
 
+    for (let event of events) {
+        let classCode = event.summary.substring(
+            event.summary.indexOf('#') + 1,
+            event.summary.lastIndexOf('#'),
+        );
+        let classItem = await Class.findOne({ classCode });
+        if (!!classItem) {
+            let students = await getAllStudentsOfClass(classItem._id);
+            event.students = students;
+            newEvents.push(toEventObject(event));
+        }
+    }
+    return newEvents;
+};
+const getAllStudentsOfClass = async classId => {
+    try {
+        const accessCodes = await AccessCode.find({ class: classId })
+            .populate('user')
+            .exec();
+        let users = accessCodes
+            .map(accessCode => {
+                return accessCode.user;
+            })
+            .filter(user => {
+                return user !== undefined;
+            });
+        return users;
+    } catch (err) {
+        return err;
+    }
+};
+const insertClassEventToTimeTable = async (classCode, events) => {
+    try {
+        const classTimeTable = new TimeTable({
+            _id: Schema.Types.ObjectId,
+            classCode: classCode,
+            events,
+        });
+        return await classTimeTable.save();
+    } catch (err) {
+        return err;
+    }
+};
 router.all('/:calendarId/:eventId', function(req, res) {
     if (!req.session.access_token) return res.redirect('/auth');
 
