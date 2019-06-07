@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const gcal = require('google-calendar');
 const Event = mongoose.model('event');
+const Class = mongoose.model('class');
+const TimeTable = mongoose.model('time_table');
+const AccessCode = mongoose.model('access_code');
 const toEventObject = require('../models/Event');
 router.all('/', function(req, res) {
     if (!req.session.access_token) return res.redirect('/api/users/auth');
@@ -47,8 +50,33 @@ router.all('/:calendarId', async (req, res) => {
                 try {
                     let convertedEvents = [];
 
-                    events.map(event => {
-                        convertedEvents.push(toEventObject(event));
+                    events.forEach(event => {
+                        const summary = { event };
+                        let classCode = summary.substring(
+                            summary.indexOf('#') + 1,
+                            summary.lastIndexOf('#'),
+                        );
+                        Class.findOne({ classCode }).then(classItem => {
+                            if (classItem) {
+                                await AccessCode.find({
+                                    class: classItem._id,
+                                })
+                                    .populate('user')
+                                    .exec((err, accessCodes) => {
+                                        if (err) return res.status(422).json(err);
+                                        let users = accessCodes
+                                            .map(accessCode => {
+                                                return accessCode.user;
+                                            })
+                                            .filter(user => {
+                                                return user !== undefined;
+                                            });
+                                        event.users = users;
+                                        convertedEvents.push(toEventObject(event));
+                                    });
+
+                            };
+                        });
                     });
 
                     // TODO: Insert All event ids to a TimeTable document with classCode
@@ -58,7 +86,6 @@ router.all('/:calendarId', async (req, res) => {
                 } catch (err) {
                     return res.status(500, err);
                 }
-                // return res.json(events);
             }
         },
     );
