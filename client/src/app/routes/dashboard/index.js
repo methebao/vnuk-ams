@@ -26,7 +26,7 @@ const Dashboard = ({
 
     return (
         <div className="dashboard">
-            {/*<ClassList classes={classes} isLoading={isFetching} />*/}
+            <ClassList classes={classes} isLoading={isFetching} />
             {/*<Paper totalPages={pages || 0} />*/}
         </div>
     );
