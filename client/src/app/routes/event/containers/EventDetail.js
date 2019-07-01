@@ -28,7 +28,6 @@ const EventDetail = ({ event }) => {
 
   //   updateEvent(event);
   // };
-  debugger;
   const { students } = event;
   const checkedStudents = students.filter(student => student.isChecked);
   const unCheckedStudents = students.filter(student => !student.isChecked);

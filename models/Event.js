@@ -17,6 +17,7 @@ mongoose.model("student", studentSchema, "student");
 
 const eventSchema = new Schema({
   eventId: String,
+  classId: Schema.Types.ObjectId,
   classCode: String,
   calendarLink: String,
   title: String,
@@ -28,7 +29,7 @@ const eventSchema = new Schema({
   students: [studentSchema]
 });
 const toEventObject = data => {
-  let { id, htmlLink, summary, location, start, end, students } = data;
+  let { id, classId, htmlLink, summary, location, start, end, students } = data;
   // TITLE of Event on Calendar must contain : #CLASS_CODE# before course name title.
   let classCode = summary.substring(
     summary.indexOf("#") + 1,
@@ -37,6 +38,7 @@ const toEventObject = data => {
   let title = summary.substring(summary.lastIndexOf("#") + 1);
   return {
     eventId: id,
+    classId,
     classCode,
     title,
     location,

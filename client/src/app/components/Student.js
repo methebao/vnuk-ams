@@ -1,16 +1,16 @@
 import React from "react";
+import { compose } from "recompose";
 import { connect } from "react-redux";
-import { withTarget } from "app/actions/withTarget";
-import { targets } from "app/constants";
-import { toogleStudentTemp } from "app/actions/events";
+import { withRouter } from "react-router-dom";
+import { toogleStudent } from "app/actions/events";
 
 import { Avatar, Card, Col, Checkbox } from "antd";
 
 const { Meta } = Card;
-const Student = ({ item, toogleStudentTemp }) => {
+const Student = ({ item, toogleStudent, history }) => {
   const { user, isChecked } = item;
   const { fullName, email } = user;
-
+  const eventId = history.location.pathname.replace("/event/", "");
   return (
     <Col span={12} style={{ marginBottom: "1rem" }}>
       <Card
@@ -28,7 +28,7 @@ const Student = ({ item, toogleStudentTemp }) => {
         extra={
           <Checkbox
             onChange={() => {
-              toogleStudentTemp(user._id);
+              toogleStudent(eventId, user._id);
             }}
             checked={isChecked}
           />
@@ -39,9 +39,12 @@ const Student = ({ item, toogleStudentTemp }) => {
     </Col>
   );
 };
-export default connect(
-  null,
-  {
-    toogleStudentTemp
-  }
+export default compose(
+  connect(
+    null,
+    {
+      toogleStudent
+    }
+  ),
+  withRouter
 )(Student);

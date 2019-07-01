@@ -25,6 +25,34 @@ router.get("/:eventId/", requireLogin, async (req, res) => {
       return res.json(event);
     });
 });
+
+router.get("/:eventId/users/:userId/toggle", async (req, res) => {
+  try {
+    let eventId = new mongoose.Types.ObjectId(req.params.eventId);
+    let userId = new mongoose.Types.ObjectId(req.params.userId);
+    let event = await Event.findOne({
+      _id: eventId
+    });
+    let updatedStudents = event.students.map(student => {
+      if (student.user.toString() === userId.toString()) {
+        student.isChecked = !student.isChecked;
+        return student;
+      }
+      return student;
+    });
+    event.students = updatedStudents;
+    await event.save();
+
+    res.json({
+      userId
+    });
+  } catch (err) {
+    res.status(422).json({
+      err
+    });
+  }
+});
+
 router.use(
   "/:eventId/students",
   (req, res, next) => {

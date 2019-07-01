@@ -68,8 +68,7 @@ export default (state = initialState, action) => {
       };
     }
     case actionTypes.STUDENT_CHECK_TOOGLE_SUCCESS: {
-      const { data: userId } = action.payload;
-      debugger;
+      const { userId } = action.payload.data;
       return {
         data: {
           ...state.data,

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 
 import Helmet from "react-helmet";
-
+import { withRouter } from "react-router-dom";
 import Header from "./components/Header";
 import Router from "./components/Router";
 import SideBar from "./components/Sidebar";
+import { ROUTES } from "app/constants";
 import { Layout as LayoutBase } from "antd";
 const { Content, Footer } = LayoutBase;
 
@@ -14,9 +15,14 @@ class Layout extends Component {
   }
 
   render() {
+    const { pathname } = this.props.location;
+    const isRenderSidebar =
+      pathname !== ROUTES.LANDING &&
+      pathname !== ROUTES.LOGIN &&
+      pathname !== ROUTES.REGISTER;
     return (
       <LayoutBase style={{ minHeight: "100vh" }}>
-        <SideBar />
+        {isRenderSidebar && <SideBar />}
         <LayoutBase className="layout">
           <Helmet
             title="VNUK - Atendance Management System"
@@ -51,8 +57,8 @@ class Layout extends Component {
             </div>
           </Content>
           <Footer style={{ textAlign: "center" }}>
-            VNUK - Attendace Management System ©2018
-            <p>Created by TheBaoDev.me</p>
+            VNUK - Attendace Management System ©2019
+            <p>Created by thebaoDEV_.</p>
           </Footer>
         </LayoutBase>
       </LayoutBase>
@@ -60,4 +66,4 @@ class Layout extends Component {
   }
 }
 
-export default Layout;
+export default withRouter(Layout);

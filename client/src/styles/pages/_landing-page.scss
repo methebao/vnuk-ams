@@ -1,0 +1,19 @@
+.landing-page {
+    display: flex;
+    width: 100%;
+
+    &__middle {
+        margin: auto;
+        text-align: center;
+    }
+
+    &__logo {}
+
+    &__title {}
+
+    &__sub-title {
+        color: #acacac;
+        font-weight: 300;
+    }
+
+}

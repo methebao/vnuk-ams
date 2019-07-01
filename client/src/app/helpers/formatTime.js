@@ -1,4 +1,8 @@
 const getFormattedTime = dateTime => {
-    return new Date(dateTime).toDateString();
+  return new Date(dateTime).toDateString();
 };
-export default getFormattedTime;
+
+const getDateFromString = dateString => {
+  return new Date(dateString);
+};
+export { getFormattedTime, getDateFromString };

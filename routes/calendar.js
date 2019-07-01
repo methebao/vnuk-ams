@@ -72,6 +72,7 @@ const processEvents = async events => {
     if (!!classItem) {
       let students = await getAllStudentsOfClass(classItem._id);
       event.students = students;
+      event.classId = classItem._id;
       let eventObject = toEventObject(event);
       let eventFetched = await Event.findOne({ eventId: eventObject.eventId });
       if (eventFetched) {
