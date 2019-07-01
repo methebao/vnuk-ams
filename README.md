@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is management application which is a major part of my bachelor graduation project and named `VNUK AMS - Attendance Management System`
 
 ## Start
 
