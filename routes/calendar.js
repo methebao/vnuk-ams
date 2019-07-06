@@ -98,22 +98,23 @@ const processEvents = async events => {
 
 const getAllStudentsOfClass = async classId => {
   try {
-    const accessCodes = await AccessCode.find({ class: classId })
+    let accessCodes = await AccessCode.find({ class: classId })
       .populate("user")
       .exec();
-    let users = accessCodes
+    let students = accessCodes
       .map(accessCode => {
         return {
-          user: accessCode.user._id,
+          user: accessCode.user && accessCode.user._id,
+          studentId: accessCode.user && accessCode.user.studentId,
           checkInTime: null,
           checkOutTime: null,
           isChecked: false
         };
       })
-      .filter(user => {
-        return user !== undefined;
+      .filter(student => {
+        return student.user !== undefined && student.studentId !== undefined;
       });
-    return users;
+    return students;
   } catch (err) {
     return err;
   }

@@ -7,6 +7,7 @@ const studentSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user"
     },
+    studentId: String,
     checkInTime: String,
     checkOutTime: String,
     isChecked: Boolean
