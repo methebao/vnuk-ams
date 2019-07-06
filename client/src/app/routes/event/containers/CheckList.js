@@ -17,8 +17,8 @@ const withConditionalRenderings = compose(
 
 const CheckList = ({ students }) => {
   const renderList = () => {
-    return students.map(student => {
-      return <Student key={student.user._id} item={student} />;
+    return students.map((student, key) => {
+      return <Student key={key} item={student} />;
     });
   };
 

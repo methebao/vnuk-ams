@@ -31,9 +31,14 @@ const Sidebar = ({ history }) => {
       </div>
 
       <Menu theme="dark" activeKey={currentPath} mode="inline">
+        <Menu.Item key={ROUTES.HOMEPAGE}>
+          <Link className="nav-text" to={ROUTES.HOMEPAGE}>
+            <Icon type="schedule" /> Schedule
+          </Link>
+        </Menu.Item>
         <Menu.Item key={ROUTES.DASHBOARD}>
           <Link className="nav-text" to={ROUTES.DASHBOARD}>
-            <Icon type="pie-chart" />
+            <Icon type="dashboard" />
             Dashboard
           </Link>
         </Menu.Item>

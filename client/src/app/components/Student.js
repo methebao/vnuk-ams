@@ -8,6 +8,7 @@ import { Avatar, Card, Col, Checkbox } from "antd";
 
 const { Meta } = Card;
 const Student = ({ item, toogleStudent, history }) => {
+  debugger;
   const { user, isChecked } = item;
   const { fullName, email } = user;
   const eventId = history.location.pathname.replace("/event/", "");
