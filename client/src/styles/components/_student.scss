@@ -1,0 +1,12 @@
+.student {
+  &__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  &__time {
+    margin-top: 15px;
+    font-size: 12px;
+  }
+}

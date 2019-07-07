@@ -1,5 +1,7 @@
+import moment from "moment";
+
 const getFormattedTime = dateTime => {
-  return new Date(dateTime).toDateString();
+  return moment(dateTime).format("MMMM Do YYYY, h:mm:ss a");
 };
 
 const getDateFromString = dateString => {

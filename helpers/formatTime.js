@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 module.exports = dateTime => {
-  return new Date(dateTime).toDateString();
+  return moment(dateTime).toISOString();
 };

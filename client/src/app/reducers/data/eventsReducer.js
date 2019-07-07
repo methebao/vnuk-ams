@@ -1,4 +1,5 @@
 import { actionTypes } from "app/constants";
+import { getFormattedTime } from "app/helpers/formatTime";
 
 const initialState = {
   isFetching: false,
@@ -68,13 +69,13 @@ export default (state = initialState, action) => {
       };
     }
     case actionTypes.STUDENT_CHECK_TOOGLE_SUCCESS: {
-      const { userId } = action.payload.data;
+      const { userId, checkInTime } = action.payload.data;
       return {
         data: {
           ...state.data,
           students: state.data.students.map(student => {
             if (student.user._id === userId) {
-              return { ...student, isChecked: !student.isChecked };
+              return { ...student, isChecked: !student.isChecked, checkInTime };
             }
             return student;
           })

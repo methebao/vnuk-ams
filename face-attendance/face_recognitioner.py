@@ -131,11 +131,15 @@ def recognize_face(fn):
 
     # move file that done from raw to done
     cv2.imwrite(FOLDER_DONE + '/'+ image_name + '' + str(names) + '.jpg',frame)
-
+    checkInTimestamp = ""
+    eventId = ""
     # Get Event Id and CheckInTime from image name
     splittedStrings = image_name.rsplit('-', 1)
-    checkInTimestamp = splittedStrings[0]
-    eventId = splittedStrings[1].replace(".png","")
+    if (len(splittedStrings) > 1):
+        checkInTimestamp = splittedStrings[0]
+        eventId = splittedStrings[1].replace(".png","")
+    else:
+        eventId = splittedStrings[0].replace(".png","")
     #Update attendance status to MongoDB
     updateToMongo(eventId,name,checkInTimestamp,frame)
     if os.path.exists(fn):
@@ -151,8 +155,9 @@ def updateToMongo(eventId,studentId,checkInTimestamp,frame):
     client = MongoClient('localhost', 27017)
     amsDB = client["vnuk-ams"]
     events = amsDB.event
-    checkInTimeFormatted = datetime.datetime.fromtimestamp(int(checkInTimestamp)/1000).isoformat()
-    print(checkInTimeFormatted)
+    if (checkInTimestamp != "")  :
+      checkInTimeFormatted = datetime.datetime.fromtimestamp(int(checkInTimestamp)/1000).isoformat()
+      print(checkInTimeFormatted)
     result = events.update_one({"eventId": eventId, "students": {
       "$elemMatch":{"studentId": studentId}
     } },{
