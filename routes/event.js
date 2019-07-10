@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const express = require("express");
 const router = express.Router();
@@ -9,7 +10,9 @@ const formatTime = require("../helpers/formatTime");
 
 router.get("/", requireLogin, async (req, res) => {
   let roomNumber = req.query.roomNumber;
+  let isHappeningFilter = req.query.isHappening;
   let roomQueryObject = {};
+  let dateQuery = {};
   if (roomNumber) {
     roomQueryObject = {
       location: `ROOM: ${roomNumber}`
@@ -17,8 +20,22 @@ router.get("/", requireLogin, async (req, res) => {
   }
 
   try {
+    let happeningEvents = [];
     let data = await Event.find(roomQueryObject);
-    return res.json(data);
+    if (isHappeningFilter) {
+      data.forEach(event => {
+        let now = moment(Date.now());
+        let startDate = moment(event.start);
+        let endDate = moment(event.end);
+        if (now >= startDate && now <= endDate) {
+          console.log(`now ${now}`);
+          console.log(`startDate ${startDate}`);
+          console.log(`endDate ${endDate}`);
+          happeningEvents.push(event);
+        }
+      });
+    }
+    return isHappeningFilter ? res.json(happeningEvents) : res.json(data);
   } catch (err) {
     return res.status(422, err);
   }

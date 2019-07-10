@@ -13,6 +13,7 @@ from imutils import face_utils
 # import serial
 import datetime
 import os
+import base64
 
 from glob import glob
 from pymongo import MongoClient

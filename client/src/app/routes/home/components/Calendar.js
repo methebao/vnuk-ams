@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { compose } from 'recompose';
 
 import toDate from '../../dashboard/helpers/toDate';
-import BigCalendar from 'react-big-calendar';
+import {Calendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment/moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import withEither from '../../../hoc/withEither';
@@ -13,7 +13,7 @@ import { ROUTES } from 'app/constants';
 import { withRouter } from 'react-router-dom';
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
-const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
+const localizer = momentLocalizer(moment); // or globalizeLocalizer
 
 const isLoadingConditionFn = props => props.isLoading;
 const nullConditionFn = props => !props.events;
@@ -25,7 +25,7 @@ const withConditionalRenderings = compose(
     withEither(isEmptyConditionFn, Empty),
 );
 
-const Calendar = ({ events, history }) => {
+const CalendarBase = ({ events, history }) => {
     const displayEvents = events.reduce((all, event) => {
         const displayEvent = {
             ...event,
@@ -36,7 +36,7 @@ const Calendar = ({ events, history }) => {
     }, []);
     return (
         <div className="calendar">
-            <BigCalendar
+            <Calendar
                 localizer={localizer}
                 events={displayEvents}
                 startAccessor="start"
@@ -50,4 +50,4 @@ const Calendar = ({ events, history }) => {
     );
 };
 
-export default withConditionalRenderings(withRouter(Calendar));
+export default withConditionalRenderings(withRouter(CalendarBase));

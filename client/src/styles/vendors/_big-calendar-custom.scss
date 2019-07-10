@@ -1,0 +1,44 @@
+.rbc-row-content {
+  height: 100%;
+  .rbc-row:last-child {
+    height: 70%;
+  }
+}
+.rbc-row-segment {
+  .rbc-event {
+    display: flex;
+    height: 99%;
+    margin: 0 auto;
+    width: 90%;
+    background-color: rgba($color-primary, 0.8) !important;
+    transition: all .2s;
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+  .rbc-event-content {
+    margin: auto;
+    width: 100%;
+    flex: 1 1 0;
+    word-wrap: break-word;
+    line-height: 1;
+    min-height: 1em;
+    cursor: pointer;
+
+  }
+
+  .rbc-event-label {
+    flex: none;
+    padding-right: 5px;
+    width: auto;
+  }
+}
+.rbc-ellipsis,
+.rbc-event-label,
+.rbc-row-segment .rbc-event-content,
+.rbc-show-more {
+  white-space: initial !important;
+}
+.rbc-day-slot .rbc-event {
+  background-color: rgba($color-primary, 0.8) !important;
+}

@@ -40,8 +40,9 @@ const Student = ({ item, toogleStudent, history }) => {
         <Meta description={email && email} />
         <Meta
           className="student__time"
-          description={`Last updated: ${checkInTime &&
-            getFormattedTime(checkInTime)}`}
+          description={`Last updated: ${
+            checkInTime ? getFormattedTime(checkInTime) : "Unchecked"
+          }`}
         />
       </Card>
     </Col>
