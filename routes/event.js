@@ -8,7 +8,7 @@ const Event = mongoose.model("event");
 const students = require("./student");
 const formatTime = require("../helpers/formatTime");
 
-router.get("/", requireLogin, async (req, res) => {
+router.get("/", async (req, res) => {
   let roomNumber = req.query.roomNumber;
   let isHappeningFilter = req.query.isHappening;
   let roomQueryObject = {};
